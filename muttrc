@@ -1,7 +1,3 @@
-set my_pass1 ="qE+Vkd}IUmVx2g"
-set my_pass2 ="qE+Vkd}IUmVx2g"
-#set home_pass = "s@4hR>8"
-
 # Accounts
 
 account-hook . 'unset imap_user imap_pass'
