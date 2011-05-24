@@ -391,4 +391,4 @@ set default_mode = command
 # === Post-load misc commands  ===============================================
 
 # Set the "home" page.	       
-set uri = http://www.facebook.com
+set uri = file:///home/josh/dialer.html
