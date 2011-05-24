@@ -1,0 +1,43 @@
+set my_pass1 ="qE+Vkd}IUmVx2g"
+set my_pass2 ="qE+Vkd}IUmVx2g"
+#set home_pass = "s@4hR>8"
+
+# Accounts
+
+account-hook . 'unset imap_user imap_pass'
+account-hook 'imaps://chubb.jp@gmail.com/' "\
+              set imap_user=chubb.jp imap_pass=$my_pass1 "
+account-hook 'imaps://u4525731@imap.anu.edu.au/' "\
+              set imap_user=u4525731 imap_pass=$my_pass2 "
+
+#folders
+
+set folder ="imaps://chubb.jp@imap.gmail.com/"
+mailboxes =INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail' =[Gmail]/Spam
+folder-hook 'imaps://chubb.jp@imap.gmail.com' " \
+        set     folder=imaps://chubb.jp@imap.gmail.com/ \
+		postponed=+[Gmail]/Drafts \
+		record=+[Gmail]/'Sent Mail' \
+		smtp_url=smtps://chubb.jp@smtp.gmail.com \
+		smtp_pass=$my_pass1 \
+		signature=~/.mutt/gmail.sig \
+		from='Joshua Chubb <chubb.jp@gmail.com> ' \
+		realname='Joshua Chubb' "
+
+set folder ="imaps://u4525731@imap.anu.edu.au/"
+mailboxes =INBOX =Drafts =Sent =Spam
+folder-hook 'imaps://u4525731@imap.anu.edu.au/' " \
+	set	folder=imaps://u4525731@imap.anu.edu.au/ \
+		postponed=+Drafts \
+		record=+Sent \
+		smtp_url=smtp://smtphost.anu.edu.au \
+		signature=~/.mutt/anu.sig \
+		from='Joshua Chubb <u4525731@anu.edu.au> ' \
+		realname='Joshua Chubb' "
+
+macro index <esc>1 "y1<return><return>"
+macro index <esc>2 "y5<return><return>"
+
+set timeout=60
+set mail_check=5
+
