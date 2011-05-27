@@ -1,14 +1,13 @@
-set my_pass1 ="qE+Vkd}IUmVx2g"
-set my_pass2 ="qE+Vkd}IUmVx2g"
-#set home_pass = "s@4hR>8"
-
+set my_tmpsecret=`gpg -o ~/.secret/.tmp -d ~/.secret/.passwd.gpg`
+set my_pass=`awk '/pass:/ {print $2}' ~/.secret/.tmp`
+set my_del=`rm -f ~/.secret/.tmp`
 # Accounts
 
 account-hook . 'unset imap_user imap_pass'
 account-hook 'imaps://chubb.jp@gmail.com/' "\
-              set imap_user=chubb.jp imap_pass=$my_pass1 "
+              set imap_user=chubb.jp imap_pass=$my_pass "
 account-hook 'imaps://u4525731@imap.anu.edu.au/' "\
-              set imap_user=u4525731 imap_pass=$my_pass2 "
+              set imap_user=u4525731 imap_pass=$my_pass "
 
 #folders
 
