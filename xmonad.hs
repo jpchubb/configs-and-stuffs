@@ -221,7 +221,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     
     ++
     
-    -- Additional Keys
+    -- Media Keys
+    [ -- XF86AudioLowerVolume
+    ((0            , 0x1008ff11), spawn "mpc -p 6601 volume -4")
+     -- XF86AudioRaiseVolume
+     , ((0            , 0x1008ff13), spawn "mpc -p 6601 volume +4")
+     -- XF86AudioMute
+     , ((0            , 0x1008ff12), spawn "mpc -p 6601 volume 0")
+     -- XF86AudioNext
+     , ((0            , 0x1008ff17), spawn "mpc -p 6601 next")
+     -- XF86AudioPrev
+     , ((0            , 0x1008ff16), spawn "mpc -p 6601 prev")
+     -- XF86AudioPlay
+     , ((0            , 0x1008ff14), spawn "mpc -p 6601  toggle")]
+
+    ++
+    -- Shortcut Keys
     [ ((mod4Mask, xK_w), spawn "uzbl"),
       ((mod4Mask, xK_f), spawn "thunar"),
       ((0, xK_Print), spawn "scrot"),

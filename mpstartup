@@ -1,0 +1,5 @@
+#!/bin/sh
+mpd ~/.mpdconf
+export MPD_PORT=6601 
+mpc ls | mpc add
+mpc random on
