@@ -20,10 +20,21 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Combo
+import XMonad.Layout.Named
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.LayoutHints
+import XMonad.Layout.LayoutModifier
+import XMonad.Layout.TwoPane
+import XMonad.Layout.WindowNavigation
+import XMonad.Layout.BoringWindows
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Simplest
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.Themes
 import Data.Monoid
 import System.IO
 import System.Exit
@@ -83,12 +94,21 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["dev","web","misc","comm","min"]
+myWorkspaces    = ["dev","web","misc","comm"]
  
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#222222"
-myFocusedBorderColor = "#343434"
+myNormalBorderColor  = "#3F3F3F"
+myFocusedBorderColor = "#8FAF9F"
+
+myTheme = defaultTheme { decoHeight = 16
+                       , activeBorderColor = "#8faf9f"
+                       , activeColor = "#8faf9f"
+                       , activeTextColor = "#000d18"
+                       , inactiveBorderColor = "#3f3f3f"
+                       , inactiveColor = "#464646"
+                       , inactiveTextColor = "#333333"
+                       }
  
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -117,7 +137,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_n     ), refresh)
  
     -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+  --  , ((modm,               xK_Tab   ), windows W.focusDown)
  
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
@@ -185,11 +205,27 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
+
+    -- sublayout keybindings
+    [((modm .|. controlMask, xK_h), sendMessage $ pullGroup L)
+    , ((modm .|. controlMask, xK_l), sendMessage $ pullGroup R)
+    , ((modm .|. controlMask, xK_k), sendMessage $ pullGroup U)
+    , ((modm .|. controlMask, xK_j), sendMessage $ pullGroup D)
+     
+    , ((modm .|. controlMask, xK_m), withFocused (sendMessage . MergeAll))
+    , ((modm .|. controlMask, xK_u), withFocused (sendMessage . UnMerge))
+     
+    , ((modm .|. controlMask, xK_period), onGroup W.focusUp')
+    , ((modm .|. controlMask, xK_comma), onGroup W.focusDown')
+     ]
+    
+    ++
     
     -- Additional Keys
     [ ((mod4Mask, xK_w), spawn "uzbl"),
       ((mod4Mask, xK_f), spawn "thunar"),
-      ((0, xK_Print), spawn "scrot")]
+      ((0, xK_Print), spawn "scrot"),
+      ((mod4Mask, xK_e), spawn "emacs")]
  
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -229,7 +265,10 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --
 
 --TO-DO add per workspace stuffs
-myLayout = avoidStrutsOn[U] $ onWorkspace "web" (simpleTabbed) $ onWorkspace "misc" (tiled ||| Mirror tiled ||| Full ||| simpleTabbed) $ onWorkspace "min" (simpleTabbed) $ tiled ||| Mirror tiled ||| Full
+myLayout =
+         avoidStrutsOn[U]
+         $ onWorkspace "web" tabs 
+         $ subThis (tiled ||| Mirror tiled ||| Full)
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -242,6 +281,11 @@ myLayout = avoidStrutsOn[U] $ onWorkspace "web" (simpleTabbed) $ onWorkspace "mi
  
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
+
+    -- Tabbed
+    tabs = tabbed shrinkText myTheme
+
+    subThis x = boringAuto . addTabs shrinkText myTheme $ subLayout [] Simplest x
  
 ------------------------------------------------------------------------
 -- Window rules:
@@ -260,7 +304,8 @@ myLayout = avoidStrutsOn[U] $ onWorkspace "web" (simpleTabbed) $ onWorkspace "mi
 --
 myManageHook = composeAll
     [ className =? "vlc"        --> doFloat
-    , className =? "Gimp"           --> doFloat
+    , className =? "Gimp"       --> doFloat
+    , className =? "Emacs"      --> doShift "dev"
     ]
  
 ------------------------------------------------------------------------
@@ -292,7 +337,11 @@ myEventHook = mempty
 myLogHook h = do
 	   dynamicLogWithPP $ xmobarPP
 	          { ppOutput = hPutStrLn h
-		  , ppTitle = xmobarColor "#696969" "" . shorten 50
+                  , ppHidden = xmobarColor "#E89393" "" . pad . wrap "[" "]"
+                  , ppHiddenNoWindows = pad
+                  , ppSep = " | "
+		  , ppTitle = xmobarColor "#DCA3A3" "" . shorten 100
+                  , ppCurrent = xmobarColor "#000D18" "#8faf9f" . pad . wrap "[" "]"
 		  }
  
 ------------------------------------------------------------------------
@@ -319,6 +368,7 @@ myStartupHook = return ()
 main = do
       xmproc <- spawnPipe "xmobar ~/.xmobarrc"
       spawn "nm-applet --sm-disable"
+      spawn "gnome-settings-manager"
       xmonad $ defaultConfig {
       -- simple stuff
         terminal           = myTerminal,

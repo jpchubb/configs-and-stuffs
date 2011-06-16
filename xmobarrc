@@ -1,17 +1,17 @@
 Config { font = "xft:Ubuntu-8"
-       , bgColor = "black"
-       , fgColor = "grey"
+       , bgColor = "#2b2b2b"
+       , fgColor = "#8fb28f"
        , position = TopW L 100
        , lowerOnStart = True
-       , commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+       , commands = [ Run Cpu ["-L","3","-H","50","--normal","#FFD7A7","--high","#E89393"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Date "%a %b %_d %H:%M" "date" 10
-		    , Run Battery [] 10
+		    , Run Battery ["-L","25","-H","75","--low","#E89393","--normal","#FFD7A7"] 600
                     , Run StdinReader
                     , Run CommandReader "~/.xmonad/ledmon" "LED"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ <fc=#ffff00>%LED%</fc> %cpu% | %memory% * %swap% <fc=#ee9a00>%date%</fc>| %battery%"
+       , template = "%StdinReader% }{ <fc=#41363C>%LED%</fc> %cpu% | %memory% * %swap% | %battery% | <fc=#DCA3A3>%date%</fc>"
        }

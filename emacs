@@ -1,33 +1,70 @@
 (add-to-list 'load-path "~/.emacs.d/") ;; user load path
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/haskell-mode/")
+(require 'org-entities)
+;;(add-to-list
 ;;;; Prettify emacs ;;;;
+(require 'zenburn)
+(zenburn)
 
 (menu-bar-mode -1)
 (when window-system
+  ;(setq frame-title-format "%b" icon title format "%b")
+  (fringe-mode -1)
   (tool-bar-mode -1)
-  (scroll-bar-mode -1))
+  (scroll-bar-mode -1)
+  (set-frame-height (selected-frame) 38)
+  (set-frame-width (selected-frame) 143))
+
 
 (setq inhibit-startup-message t
       column-number-mode 1
       echo-keystrokes 0.1
       show-trailing-whitespace 1)
 
+(set-face-attribute 'default nil :height 92)
+
+;;pretty lambdas
+(font-lock-add-keywords 'emacs-lisp-mode '(("(\\(lambda\\)\\>" (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) ?λ))))))
+
+(add-to-list 'org-entities '("neg" "\\neg" t "&neg;" "[negation]" "[negation]" "¬"))
+(add-to-list 'org-entities '("vdash" "\\vdash" t "&vdash;" "[vdash]" "[vdash]" "⊢"))
+(add-to-list 'org-entities '("iff" "\\iff" t "&iff;" "[if and only if]" "[if and only if]" ""))
+(add-to-list 'org-entities '("top" "\\top" t "&top;" "[Top, true]" "[Top, true]" "⊤"))
+(add-to-list 'org-entities '("bot" "\\bot" t "&bot;" "[Bot, false]" "[Bot, false]" "⊥"))
+(add-to-list 'org-entities '("langle" "\\langle" t "&blah;" "[angle bracket left]" "[angle bracket left]" "⟨"))
+(add-to-list 'org-entities '("rangle" "\\rangle" t "&blah;" "[angle bracket right]" "[angle bracket right]" "⟩"))
+(add-hook 'org-mode-hook 'org-toggle-pretty-entities)
+
 ;;;; extra keybindings ;;;;
 (global-set-key (kbd "C-c 1") 'erc)
 (global-set-key (kbd "C-c 2") 'scratch)
 (global-set-key (kbd "C-c 0") 'switch-to-dot-emacs)
+(global-set-key (kbd "C-c 3") 'switch-to-xmonadhs)
 
 ;;;; IDE useful stuffs ;;;;
 
 ;;;; Major Modes ;;;;
+;; Org-mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+;; Haskell
+(autoload 'haskell-mode "/usr/share/emacs/site-lisp/haskell-mode/haskell-site-file" "Major mode for editing haskell" t)
+(setq haskell-font-lock-symbols t) ;; enable comments in haskell
+(let ( (fn-list '(turn on haskell-dot-mode turn-on-haskell-indent)) ) 
+  (mapc (lambda (fn) (add-hook 'haskell-mode-hook fn)) fn-list))
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode) )
-;(require 'haskkell)
+;(require 'haskell)
+
 ;;;; Minor Modes ;;;;
-(require 'scratch-mode) ;; funky mode sensitive scratch buffers
+;(require 'scratch-mode) ;; funky mode sensitive scratch buffers
 
 (autoload 'tramp "Remote file manipulation in TRAMP." t)
 
-(require 'ido) ;; interactively do shit
+(require 'ido) ;; interactively do stuff
 
 ;;; Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
@@ -60,3 +97,8 @@ the character typed."
   (if (equal (buffer-name) ".emacs")
       (eval-buffer)
     (find-file "~/.emacs")))
+
+(defun switch-to-xmonadhs (&rest junk)
+  "Switch to xmonad.hs file"
+  (interactive)
+    (find-file "~/.xmonad/xmonad.hs"))

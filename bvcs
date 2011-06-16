@@ -1,0 +1,29 @@
+#! /bin/bash
+# a stupid VCS written solely for the purpose of practicing version control submission
+# version: 22/06/10 02:06:09
+
+
+t=`date '+%Y-%j-%H-%M'`
+
+# revert flag check we'll find the reversion that we have then copy it into the working directory
+if [ $1 = -r ]; then
+  r=`ls .bvcs/ | cut -f 1 | head -n -1 | sort -r | head -n $2 | tail -n 1`
+  cp -r .bvcs/$r/$3 ./$3
+else
+# a backup function not too sure why I have it but anyway it copies the entire working directory into the home folder for stuff
+	if [ $1 = -bu ]; then
+	  cp -r $2/* ~/.bvcs/$2
+	  cp -r $2/.bvcs/ ~/.bvcs/$2/.bvcs
+	  cat .bvcs/mod $2/.bvcs/mod > .bvcs/mod1
+	  cp ~/.bvcs/mod1 .bvcs/mod
+	  rm ~/.bvcs/mod1
+	else
+# the commit part adds reversion history as well to a file called mod
+	  mkdir .bvcs/$t
+	  cp -r $* .bvcs/$t/$*
+	  nano .bvcs/$t/.mod
+	  cat .bvcs/mod .bvcs/$t/.mod > .bvcs/mod1
+	  cp .bvcs/mod1 .bvcs/mod
+	  rm .bvcs/mod1
+	fi
+fi

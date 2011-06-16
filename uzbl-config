@@ -55,6 +55,8 @@ set authentication_handler = sync_spawn @scripts_dir/auth.py
 # Open in new tab
 #@on_event   NEW_WINDOW     event NEW_TAB %s
 
+@on_event   REQ_NEW_WINDOW event NEW_WINDOW %s
+
 # Download handler
 @on_event   DOWNLOAD_REQUEST    spawn @scripts_dir/download.sh %s \@proxy_url
 
@@ -103,7 +105,7 @@ set selected_section  = <span foreground="#606060">\@[\@SELECTED_URI]\@</span>
 
 set status_format     = <span font_family="monospace">@mode_section @keycmd_section @progress_section @uri_section @name_section @status_section @scroll_section @selected_section</span>
 
-set title_format_long = \@keycmd_prompt \@raw_modcmd \@raw_keycmd \@TITLE - Uzbl browser <\@NAME> \@SELECTED_URI
+# set title_format_long = \@keycmd_prompt \@raw_modcmd \@raw_keycmd \@TITLE - Uzbl browser <\@NAME> \@SELECTED_URI
 
 # Progress bar config
 @progress width    = 8
@@ -122,6 +124,7 @@ set title_format_long = \@keycmd_prompt \@raw_modcmd \@raw_keycmd \@TITLE - Uzbl
 
 # === Core settings ==========================================================
 
+set title_format_long = \@TITLE \@keycmd_prompt \@raw_modcmd \@raw_keycmd
 set useragent         = Uzbl (Webkit @{WEBKIT_MAJOR}.@{WEBKIT_MINOR}.@{WEBKIT_MICRO}) (@(+uname -s)@ @(+uname -m)@ [@ARCH_UZBL]) (Commit @COMMIT)
 set fifo_dir          = /tmp
 set socket_dir        = /tmp
@@ -201,12 +204,16 @@ set ebind = @mode_bind global,-insert
 @cbind    :_        = %s
 
 # --- Page movement binds ---
-@cbind  j            = scroll vertical 20
+@cbind  j            = scroll vertical 30
+@cbind  <Up>	     = scroll vertical -20
 @cbind  J	     = scroll vertical 98%
-@cbind  k            = scroll vertical -20
+@cbind  k            = scroll vertical -30
+@cbind  <Down>	     = scroll vertical 20
 @cbind  K	     = scroll vertical -98%
 @cbind  h            = scroll horizontal -20
+@cbind  <Left>	     = scroll horizontal -20
 @cbind  l            = scroll horizontal 20
+@cbind  <Right>	     = scroll horizontal 20
 @cbind  <Page_Up>    = scroll vertical -100%
 @cbind  <Page_Down>  = scroll vertical 100%
 @cbind  <<           = scroll vertical begin
@@ -266,6 +273,12 @@ set preset = event PRESET_TABS
 @cbind  gg<Google:>_         = uri http://www.google.com/search?q=\@<encodeURIComponent(%r)>\@
 @cbind  \\awiki<Archwiki:>_  = uri http://wiki.archlinux.org/index.php/Special:Search?search=\@<encodeURIComponent(%r)>\@&go=Go
 @cbind  \\wiki<Wikipedia:>_  = uri http://en.wikipedia.org/w/index.php?title=Special:Search&search=\@<encodeURIComponent(%r)>\@&go=Go
+@cbind  \\yt<YouTube:>_	     = sh 'echo "set uri = $(surfraw -p $8 %s)" > $4' youtube
+
+# ---- New Window search binds ---
+@cbind  'gg<Google:>_	     = sh 'uzbl-browser -u $(surfraw -p $8 %s)' google
+@cbind  '\\wiki<Wikipedia:>_ = sh 'uzbl-browser -u $(surfraw -p $8 %s)' wikipedia
+@cbind	'\\yt<Youtube:>_     = sh 'uzbl-browser -u $(surfraw -p $8 %s)' youtube
 
 # --- Handy binds ---
 # Set function shortcut
@@ -297,12 +310,24 @@ set toggle_cmd_ins = @toggle_modes command insert
 @bind   <Ctrl>i    = @toggle_cmd_ins
 
 # --- Hard-bound bookmarks ---
-@cbind  gh  = uri http://www.facebook.com
+@cbind  gh  = uri file:///home/josh/dialer.html
+@cbind  fb  = uri http://www.facebook.com
+@cbind  dtf = uri http://www.dreamtheaterforums.org
+@cbind  cf  = uri http://www.christianforums.com
+@cbind  vz = uri http://hvz.club.anu.edu.au/forum
+@cbind  git = uri http://github.com
+@cbind  str = uri https://cs.anu.edu.au/streams
+@cbind  wat = uri http://wattle.anu.edu.au
+@cbind  gur = uri http://imgur.com
+@cbind  af  = uri http://mafiascum.net
+@cbind  em  = uri http://www.emacswiki.org
 
 # --- Yanking & pasting binds ---
 @cbind  yu  = sh 'printf $6 | xclip'
 @cbind  yy  = sh 'printf $7 | xclip'
 
+# Clone current window
+@cbind	c   = event REQ_NEW_WINDOW \@uri 
 # Go the page from primary selection
 @cbind  p   = sh 'echo "uri `xclip -selection primary -o | sed s/\\\@/%40/g`" > $4'
 # Go to the page in clipboard
@@ -344,15 +369,12 @@ set formfiller = spawn @scripts_dir/formfiller.sh
 # Example showing how to use uzbl's fifo to execute a command.
 #@bind  X1 = sh 'echo "set zoom_level = 1.0" > "$4"'
 #@bind  X2 = sh 'echo "js alert (\\"This is sent by the shell via a fifo\\")" > "$4"'
-@bind 'fb' @nowu set uri = http://www.facebook.com/
-@bind 'hvz' @nowu set uri = http://hvz.club.anu.edu.au/forum/
-@bind 'cf' @nowu set uri = http://www.christianforums.com/
 
 # === Context menu items =====================================================
 
 # Default context menu
 menu_add Google = set uri = http://google.com
-menu_add Go Home = set uri = http://www.facebook.com
+menu_add Go Home = set uri = file:///home/josh/dialer.html
 menu_separator separator_1
 menu_add Quit uzbl = exit
 
