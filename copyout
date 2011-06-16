@@ -1,0 +1,6 @@
+cp bin/configs-and-stuffs/uzbl-config ~/.config/uzbl/config
+cp bin/configs-and-stuffs/xmonad.hs ~/.xmonad/xmonad.hs
+cp bin/configs-and-stuffs/xmobarrc ~/.xmobarrc
+cp bin/configs-and-stuffs/emacs ~/.emacs
+cp bin/configs-and-stuffs/dialer.html ~/dialer.html
+cp bin/configs-and-stuffs/muttrc ~/.muttrc
