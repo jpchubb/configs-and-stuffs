@@ -4,3 +4,5 @@ cp xmobarrc ~/.xmobarrc
 cp emacs ~/.emacs
 cp dialer.html ~/dialer.html
 cp muttrc ~/.muttrc
+cp mpdconf ~/.mpdconf
+cp mp* ..

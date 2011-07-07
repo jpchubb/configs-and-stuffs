@@ -1,3 +1,4 @@
+
 --
 -- xmonad example config file for xmonad-0.9
 --
@@ -223,24 +224,24 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     
     -- Media Keys
     [ -- XF86AudioLowerVolume
-    ((0            , 0x1008ff11), spawn "mpc -p 6601 volume -4")
+    ((0            , 0x1008ff11), spawn "mpc volume -4")
      -- XF86AudioRaiseVolume
-     , ((0            , 0x1008ff13), spawn "mpc -p 6601 volume +4")
+     , ((0            , 0x1008ff13), spawn "mpc volume +4")
      -- XF86AudioMute
-     , ((0            , 0x1008ff12), spawn "mpc -p 6601 volume 0")
+     , ((0            , 0x1008ff12), spawn "mpc volume 0")
      -- XF86AudioNext
-     , ((0            , 0x1008ff17), spawn "mpc -p 6601 next")
+     , ((0            , 0x1008ff17), spawn "mpc next")
      -- XF86AudioPrev
-     , ((0            , 0x1008ff16), spawn "mpc -p 6601 prev")
+     , ((0            , 0x1008ff16), spawn "mpc prev")
      -- XF86AudioPlay
-     , ((0            , 0x1008ff14), spawn "mpc -p 6601  toggle")]
+     , ((0            , 0x1008ff14), spawn "mpc toggle")]
 
     ++
     -- Shortcut Keys
     [ ((mod4Mask, xK_w), spawn "uzbl"),
       ((mod4Mask, xK_f), spawn "thunar"),
       ((0, xK_Print), spawn "scrot"),
-      ((mod4Mask, xK_e), spawn "emacs")]
+      ((mod4Mask, xK_e), spawn "emacsclient -c")]
  
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -382,7 +383,7 @@ myStartupHook = return ()
 --
 main = do
       xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-      spawn "nm-applet --sm-disable"
+      spawn "fbsetbg -c wallpaper.jpg"
       spawn "gnome-settings-manager"
       xmonad $ defaultConfig {
       -- simple stuff
