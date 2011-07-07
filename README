@@ -1,2 +1,38 @@
 a smattering of config files and some other stuff namely:
 BVCS - a simple dumb version control system written in bash
+
+
+
+For note:
+
+*** XMONAD KEYBINDINGS ***
+`m being the windows key
+
+m-S-<Return>  bring up a terminal
+`m-p 	      bring up dmenu
+`m-S-c	      kill focused window
+`m-j	      focus up
+`m-k	      focus down
+`m-m	      focus master
+`m-<Return>   swap to master
+`m-S-j	      swap up
+`m-S-k	      swap down
+`m-h	      shrink master
+`m-l	      expand master
+`m-t	      tile window
+`m-,	      increase number of master windows
+`m-.	      decrease number of master windows
+`m-q	      recompile and restart xmonad
+`m-S-q	      quit xmonad
+`m-[1..4]     move to workspace [1..4]
+`m-S-[1..4]   move window to workspace [1..4]
+
+`m-C-m	      group all windows
+`m-C-u	      ungroup focused window
+`m-C-,	      in-group focus up
+`m-C-.	      in-group focus down
+
+`m-w	      spawn uzbl
+`m-e	      create an emacs frame
+`m-C-<Return> bring up an ssh session to Elijah
+`m-C-p	      bring up an ssh session to partch

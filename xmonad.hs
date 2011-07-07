@@ -238,10 +238,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     ++
     -- Shortcut Keys
-    [ ((mod4Mask, xK_w), spawn "uzbl"),
-      ((mod4Mask, xK_f), spawn "thunar"),
+    [ ((modm, xK_w), spawn "uzbl"),
+      ((modm, xK_f), spawn "thunar"),
       ((0, xK_Print), spawn "scrot"),
-      ((mod4Mask, xK_e), spawn "emacsclient -c")]
+      ((modm, xK_e), spawn "emacsclient -c"),
+      ((modm .|. controlMask, xK_Return), spawn "gnome-terminal --profile=Elijah"),
+      ((modm .|. controlMask, xK_p), spawn "gnome-terminal --profile=Partch")]
  
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -383,7 +385,7 @@ myStartupHook = return ()
 --
 main = do
       xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-      spawn "fbsetbg -c wallpaper.jpg"
+      spawn "fbsetbg -c ~/wallpaper.jpg"
       spawn "gnome-settings-manager"
       xmonad $ defaultConfig {
       -- simple stuff

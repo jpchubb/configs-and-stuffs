@@ -81,9 +81,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
     alias emacs='emacs -nw'
-    alias screen='screen -Rx'
     alias sd='shutdown -h now'
     alias rs='shutdown -r now'
+    alias gc='git commit'
+    alias ga='git add *'
+    alias gpgh='git push origin master'
+    alias cl='clear'
+    alias Elijah='screen -t Elijah ssh -l josh -i ~/.ssh/id_rsa elijah.home.singlespoon.org.au'
+    alias partch='screen -t partch ssh -l u4525731 partch.anu.edu.au'
 fi
 
 # some more ls aliases
