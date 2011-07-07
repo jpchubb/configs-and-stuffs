@@ -4,16 +4,23 @@
 ;;(add-to-list
 ;;;; Prettify emacs ;;;;
 (require 'zenburn)
-(zenburn)
+
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)
 
 (menu-bar-mode -1)
-(when window-system
   ;(setq frame-title-format "%b" icon title format "%b")
+
   (fringe-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+(when window-system
+  (zenburn)
   (set-frame-height (selected-frame) 38)
-  (set-frame-width (selected-frame) 143))
+  (set-frame-width (selected-frame) 143)
+  (add-hook 'org-mode-hook 'org-toggle-pretty-entities))
 
 
 (setq inhibit-startup-message t
@@ -33,13 +40,15 @@
 (add-to-list 'org-entities '("bot" "\\bot" t "&bot;" "[Bot, false]" "[Bot, false]" "⊥"))
 (add-to-list 'org-entities '("langle" "\\langle" t "&blah;" "[angle bracket left]" "[angle bracket left]" "⟨"))
 (add-to-list 'org-entities '("rangle" "\\rangle" t "&blah;" "[angle bracket right]" "[angle bracket right]" "⟩"))
-(add-hook 'org-mode-hook 'org-toggle-pretty-entities)
+
 
 ;;;; extra keybindings ;;;;
-(global-set-key (kbd "C-c 1") 'erc)
-(global-set-key (kbd "C-c 2") 'scratch)
+(global-set-key (kbd "C-c 1") 'dired)
+(global-set-key (kbd "C-c 2") 'switch-to-screenrc)
 (global-set-key (kbd "C-c 0") 'switch-to-dot-emacs)
 (global-set-key (kbd "C-c 3") 'switch-to-xmonadhs)
+(global-set-key (kbd "C-c 4") 'switch-to-gtd)
+(global-set-key (kbd "C-c 9") 'ielm)
 
 ;;;; IDE useful stuffs ;;;;
 
@@ -102,3 +111,23 @@ the character typed."
   "Switch to xmonad.hs file"
   (interactive)
     (find-file "~/.xmonad/xmonad.hs"))
+
+(defun switch-to-screenrc (&rest junk)
+  "Switch to .screenrc file"
+  (interactive)
+    (find-file "~/.screenrc"))
+
+(defun switch-to-gtd (&rest junk)
+  "Switch to gtd.org file"
+  (interactive)
+    (find-file "~/gtd.org"))
+
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido"
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+(server-start)
+(desktop-load-default)
