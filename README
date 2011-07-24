@@ -1,6 +1,6 @@
 a smattering of config files and some other stuff namely:
 BVCS - a simple dumb version control system written in bash
-
+USBGIT - a small backup/git script for pulling onto a USB stick
 
 For note:
 *** SETUP STUFF ***
