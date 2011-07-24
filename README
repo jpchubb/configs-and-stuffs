@@ -1,9 +1,36 @@
+* TODO get the ssh-agent working properly
+
+
 a smattering of config files and some other stuff namely:
 BVCS - a simple dumb version control system written in bash
 
 
-
 For note:
+*** SOME EMACS KEYBINDINGS ***
+C-c 1 Dired
+C-c 2 Open my gtd.org file for tracking study habits
+C-c 3 Open xmonad.hs
+C-c 4 Open screenrc file
+C-c 8 Magit
+        k kill one item (delete if untracked)
+	s stage one item
+	S stage all in a section
+	u unstage one item
+	U unstage all in a section
+	i ignore things
+	P push to defined remote (first time will ask which remote)
+	f 'git remote update'
+	F pull from remote
+C-c 9 ielm
+C-c 0 .emacs
+<F12> Agenda
+        a Agenda
+        t TODO
+C-M-r Org-Capture
+	a Assignment -> Uni.org
+	t todo	     -> refile.org
+	n note	     -> refile.org
+	j Journal    -> diary.org
 
 *** XMONAD KEYBINDINGS ***
 `m being the windows key
