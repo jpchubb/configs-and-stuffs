@@ -1,0 +1,4 @@
+sudo mount /dev/sdb1 ~/.usb
+cd ~/.usb/Documents
+git pull origin master
+sudo umount /dev/sdb1
