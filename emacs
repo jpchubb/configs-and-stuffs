@@ -476,6 +476,12 @@ A prefix arg forces clock in of the default task."
                "* %? :NOTE:\n%U\n%a\n  %i" :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree "~/Documents/agenda/diary.org")
                "* %?\n%U\n  %i" :clock-in t :clock-resume t)
+              ("l" "Library book" entry (file+headline "~/Documents/agenda/Uni.org" "Library")
+               "*** %^{Title}-%^{Library} \n DEADLINE: %^T\n\n" :immediate-finish t)
+              ("p" "Phone call" entry (file "~/Documents/agenda/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/Documents/agenda/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n  %i")
 	      ("a" "Assignment" plain (file+function "~/Documents/agenda/Uni.org" course-code)
 	       "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 	      ("u" "University" entry (file+headline "~/Documents/agenda/Uni.org" "University")
@@ -678,7 +684,7 @@ the character typed."
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Documents/agenda/uni-2600.org" "~/Documents/agenda/Uni.org"))))
+ '(org-agenda-files (quote ("~/Documents/agenda/Uni.org"))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.

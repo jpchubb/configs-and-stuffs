@@ -1,11 +1,11 @@
-* TODO get the ssh-agent working properly
-
-
 a smattering of config files and some other stuff namely:
 BVCS - a simple dumb version control system written in bash
 
 
 For note:
+*** SETUP STUFF ***
+Need to run start_agent when first setting up ssh-agent
+
 *** SOME EMACS KEYBINDINGS ***
 C-c 1 Dired
 C-c 2 Open my gtd.org file for tracking study habits
