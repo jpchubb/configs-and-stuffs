@@ -50,6 +50,23 @@
 (global-set-key (kbd "C-c 2") 'switch-to-gtd)
 (global-set-key (kbd "C-c 9") 'ielm)
 (global-set-key (kbd "C-c 8") 'magit-status)
+(global-set-key (kbd "C-c s") 'insert-org-source)
+;;;;;;;;  ERC bindings ;;;;;;;;;
+(setq erc-autojoin-channels-alist '(("freenode.net" "#ubuntu-offtopic")
+				    ("mibbit.com" "#anucssa")))
+
+(global-set-key (kbd "C-c e f") (lambda () (interactive)
+				  (erc :server "irc.freenode.net" :port "6667"
+				       :nick "progmonk" :password "f^F2PR5c")))
+
+(global-set-key (kbd "C-c e a") (lambda () (interactive)
+				  (erc :server "irc.mibbit.com" :port "6667"
+				       :nick "progmonk")))
+
+(global-set-key (kbd "C-c e b") (lambda () (interactive)
+				  (erc :server "localhost" :port "6667"
+				       :nick "josh" :password "f^F2PR5c")))
+
 
 ;;;; IDE useful stuffs ;;;;
 
@@ -88,7 +105,7 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-(setq org-agenda-files '("~/Documents/agenda/"))
+(setq org-agenda-files '("~/Documents/agenda"))
 (setq org-tag-alist (quote ((:startgroup . nil)
 			   ("@UNI" . ?u)
 			   ("@HOME" . ?h)
@@ -217,6 +234,33 @@
                ((org-agenda-overriding-header "Tasks to Archive")
                 (org-agenda-skip-function 'bh/skip-non-archivable-tasks))))))
 (setq org-tags-match-list-sublevels nil)
+
+; Targets include this file and any file contributing to the agenda - up to 2 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 3)
+                                 (org-agenda-files :maxlevel . 3))))
+
+; Stop using paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path nil)
+
+; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
+
+; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes (quote confirm))
+
+; Use IDO for both buffer and file completion and ido-everywhere to t
+(setq org-completion-use-ido t)
+(setq ido-everywhere t)
+(setq ido-max-directory-size 100000)
+(ido-mode (quote both))
+
+;;;; Refile settings
+; Exclude DONE state tasks from refile targets
+(defun bh/verify-refile-target ()
+  "Exclude todo keywords with a done state from refile targets"
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+(setq org-refile-target-verify-function 'bh/verify-refile-target)
 
 ;; Resume clocking tasks when emacs is restarted
 (org-clock-persistence-insinuate)
@@ -676,6 +720,12 @@ the character typed."
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
+(define-skeleton insert-org-source
+  "Inserts an org-mode source block."
+  "Language: "
+  "#+BEGIN_SRC " str
+  "\n\n#+END_SRC")
+
 (server-start)
 (require 'org-protocol)
 (desktop-load-default)
@@ -684,7 +734,9 @@ the character typed."
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Documents/agenda/Uni.org"))))
+ '(org-agenda-files (quote ("~/Documents/agenda/Uni.org"
+			    "~/Documents/agenda/todo.org"
+			    "~/Documents/agenda/refile.org"))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
