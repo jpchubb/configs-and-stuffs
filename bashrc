@@ -5,6 +5,7 @@ export ALERNATE_EDITOR=emacs
 export EDITOR='emacsclient -c -nw'
 export WWW_HOME='file:///home/josh/dialer.html'
 export LOCALE=UTF-8
+export TERM=xterm-color
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return

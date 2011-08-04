@@ -1,6 +1,6 @@
 ;; ============================
 ;; custom .stumpwmrc file
-;; Matthew Ball (copyleft 2011)
+;; Joshua Chubb
 ;; ============================
 
 ;; tell stumpwm what lisp implementation to use

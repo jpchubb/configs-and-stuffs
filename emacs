@@ -46,6 +46,7 @@
 ;; programs
 (global-set-key (kbd "C-c 1 d") 'dired)
 (global-set-key (kbd "C-c 1 g") 'gnus)
+(global-set-key (kbd "<f11>") 'magit-status)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
 ;;=======================;;
