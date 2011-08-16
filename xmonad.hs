@@ -385,8 +385,6 @@ myStartupHook = return ()
 --
 main = do
       xmproc <- spawnPipe "xmobar ~/.xmobarrc"
-      spawn "fbsetbg -c ~/wallpaper.jpg"
-      spawn "gnome-settings-manager"
       xmonad $ defaultConfig {
       -- simple stuff
         terminal           = myTerminal,

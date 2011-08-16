@@ -6,6 +6,7 @@
 
 ;; I use C-M-r to start capture mode
 (global-set-key (kbd "C-M-r") 'org-capture)
+(global-set-key (kbd "C-c s") 'insert-fsa)
 
 ;;=============;;
 ;;;; Capture ;;;;
@@ -179,7 +180,7 @@
 ;;==============;;
 
 (add-to-list 'org-entities '("neg" "\\neg" t "&neg;" "[negation]" "[negation]" "¬"))
-(add-to-list 'org-entities '("vdash" "\\vdash" t "&vdash;" "[vdash]" "[vdash]" "⊢"))
+(add-to-list 'org-entities '("vdash" "\\vdash" t "|-" "[vdash]" "[vdash]" "⊢"))
 (add-to-list 'org-entities '("iff" "\\iff" t "&iff;" "[if and only if]" "[if and only if]" ""))
 (add-to-list 'org-entities '("top" "\\top" t "&top;" "[Top, true]" "[Top, true]" "⊤"))
 (add-to-list 'org-entities '("bot" "\\bot" t "&bot;" "[Bot, false]" "[Bot, false]" "⊥"))

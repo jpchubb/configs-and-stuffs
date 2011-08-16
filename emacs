@@ -10,6 +10,8 @@
 (setq recentf-max-menu-items 25)
 (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)
 
+(global-visual-line-mode)
+
 (menu-bar-mode -1)
   ;(setq frame-title-format "%b" icon title format "%b")
 
@@ -60,6 +62,7 @@
 ;; Org-mode
 
 (load-file "~/.emacs.d/org-config.el")
+(load-file "~/.emacs.d/babel.el")
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
 ;; Haskell
@@ -70,6 +73,10 @@
 ;  (mapc (lambda (fn) (add-hook 'haskell-mode-hook fn)) fn-list)))
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode) )
 ;(require 'haskell)
+
+;; LaTeX
+(global-set-key (kbd "C-c e") 'insert-latex-block)
+
 
 ;;=================;;
 ;;;; Minor Modes ;;;;
@@ -139,11 +146,19 @@ the character typed."
 ;;;; Skeletons ;;;;
 ;;===============;;
 
-(define-skeleton insert-org-source
-  "Inserts an org-mode source block."
-  "Language: "
-  "#+BEGIN_SRC " str
-  "\n\n#+END_SRC")
+(define-skeleton insert-fsa
+  "Inserts an org-mode fsa"
+  "File: "
+  "#+begin_src latex :file " str
+  ":packages '((\"\" \"tikz\")) :border 1em\n  \\usetikzlibrary{shapes,arrows}\n  \\tikzstyle{astate} = [circle,draw,text centered, font=\\footnotesize, fill=blue!25]\n  \\tikzstyle{rstate} = [circle,draw,text centered, font=\\footnotesize, fill=red!25]\n#+end_src")
+
+(define-skeleton insert-latex-block
+  "Inserts a LaTeX block"
+  "Type: "
+  "\\begin{" str
+  "}\n\n\\end{" str
+  "}")
+
 
 ;;================;;
 ;;;; Exec stuff ;;;;
