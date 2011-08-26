@@ -1,8 +1,9 @@
 (add-to-list 'load-path "~/.emacs.d/") ;; user load path
+(add-to-list 'load-path "~/.emacs.d/ada")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/haskell-mode/")
-;;====================;;
-;;;; Prettify emacs ;;;;
-;;====================;;
+;;==================;;
+;;; Prettify emacs ;;;
+;;==================;;
 (require 'zenburn)
 
 (require 'recentf)
@@ -35,9 +36,9 @@
 ;; pretty lambdas
 (font-lock-add-keywords 'emacs-lisp-mode '(("(\\(lambda\\)\\>" (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) ?λ))))))
 
-;;=======================;;
-;;;; extra keybindings ;;;;
-;;=======================;;
+;;=====================;;
+;;; extra keybindings ;;;
+;;=====================;;
 
 ;; File switches
 (global-set-key (kbd "C-c 0 e") 'switch-to-dot-emacs)
@@ -51,13 +52,13 @@
 (global-set-key (kbd "<f11>") 'magit-status)
 (global-set-key (kbd "<f12>") 'org-agenda)
 
-;;=======================;;
-;;;; IDE useful stuffs ;;;;
-;;=======================;;
+;;=====================;;
+;;; IDE useful stuffs ;;;
+;;=====================;;
 
-;;=================;;
-;;;; Major Modes ;;;;
-;;=================;;
+;;===============;;
+;;; Major Modes ;;;
+;;===============;;
 
 ;; Org-mode
 
@@ -77,10 +78,13 @@
 ;; LaTeX
 (global-set-key (kbd "C-c e") 'insert-latex-block)
 
+;; Ada
+;;(load-file "~/.emacs.d/ada/ada-mode-keys.el");; don't understand how this doesn't work
+(require 'ada-mode) ; maybe this will help
 
-;;=================;;
-;;;; Minor Modes ;;;;
-;;=================;;
+;;===============;;
+;;; Minor Modes ;;;
+;;===============;;
 
 (autoload 'tramp "Remote file manipulation in TRAMP." t)
 
@@ -96,13 +100,13 @@ the character typed."
     (t                    (self-insert-command (or arg 1))) ))
 (global-set-key (kbd "C-%") `goto-match-paren)
 
-;;================;;
-;;;; formatting ;;;;
-;;================;;
+;;==============;;
+;;; formatting ;;;
+;;==============;;
 
-;;======================;;
-;;;; Custom functions ;;;;
-;;======================;;
+;;====================;;
+;;; Custom functions ;;;
+;;====================;;
 
 (defun switch-to-dot-emacs (&rest junk)
   "Switch to .emacs file"
@@ -142,9 +146,9 @@ the character typed."
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
-;;===============;;
-;;;; Skeletons ;;;;
-;;===============;;
+;;=============;;
+;;; Skeletons ;;;
+;;=============;;
 
 (define-skeleton insert-fsa
   "Inserts an org-mode fsa"
@@ -159,11 +163,21 @@ the character typed."
   "}\n\n\\end{" str
   "}")
 
+;;(load-file "coversheet.el")
 
-;;================;;
-;;;; Exec stuff ;;;;
-;;================;;
+;;==============;;
+;;; Exec stuff ;;;
+;;==============;;
 
 (server-start)
 (desktop-load-default)
 (require 'org-protocol)
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))

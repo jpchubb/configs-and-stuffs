@@ -26,3 +26,13 @@
 (defparameter *border-colour* "grey25" "Set the border colour.")
 (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
 (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
+
+
+;;; Battery
+(defcommand show-battery () ()
+"Show current battery status."
+(echo-string (current-screen) (run-shell-command "acpi" t)))
+
+;;; Keys
+(define-key stumpwm:*root-map* (kbd "B") "show-battery")
+;(define-key sutmpwm:*root-map* (kbd "E") "emacsclient -c -e \"(zenburn)\"")
