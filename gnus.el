@@ -1,7 +1,16 @@
-;; ============================
-;; custom .gnus file
-;; ============================
-;; TODO: move ~/.mailrc to ~/.conf-scripts/mailrc
+;; ==================== gnus.el
+;;; Author: 
+;; Joshua Chubb <chubb.jp@gmail.com>
+;;; Forked from:
+;; Matthew Ball <matt.ball@gmail.com>
+;;
+;;; DATE: Friday, August 26 2011
+;; ----------------------------------------
+;; A config file for the news reader gnus
+;; ----------------------------------------
+;;; Licence
+;; GPL
+;; ========================================
 
 ;; ==================
 ;;; personal settings

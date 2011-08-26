@@ -1,3 +1,16 @@
+;; ==================== babel.el
+;;; Author: 
+;; Joshua Chubb <chubb.jp@gmail.com>
+;;
+;;; DATE: Friday, August 26 2011
+;; ----------------------------------------
+;; A configuration file for the org-mode
+;; extension babel
+;; ----------------------------------------
+;;; Licence
+;; GPL
+;; ========================================
+
 ;;=========;;
 ;;; LaTeX ;;;
 ;;=========;;

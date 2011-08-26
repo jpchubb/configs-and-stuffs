@@ -1,7 +1,18 @@
-;; ============================
-;; custom .stumpwmrc file
-;; Joshua Chubb
-;; ============================
+;; ==================== stumpwmrc.el
+;;; Author: 
+;; Joshua Chubb <chubb.jp@gmail.com>
+;;; Forked from:
+;; Matthew Ball <matt.ball@gmail.com>
+;;
+;;; DATE: Friday, August 26 2011
+;; ----------------------------------------
+;; A config file for the tiling window
+;; manager stumpwm
+;; ----------------------------------------
+;;; Licence
+;; GPL
+;; ========================================
+
 
 ;; tell stumpwm what lisp implementation to use
 ;debian=sbcl

@@ -1,3 +1,16 @@
+;; ==================== org-config.el
+;;; Author: 
+;; Joshua Chubb <chubb.jp@gmail.com>
+;;
+;;; DATE: Friday, August 26 2011
+;; ----------------------------------------
+;; A config file for org-mode, which
+;; is a organisational extension to emacs
+;; ----------------------------------------
+;;; Licence
+;; GPL
+;; ========================================
+
 (require 'org-entities)
 
 ;;==================;;
