@@ -3,20 +3,22 @@
 ;; Joshua Chubb <chubb.jp@gmail.com>
 ;;
 ;;; DATE: Friday, August 26 2011
+;; ----------------------------------------
 ;; An emacs configuration file. 
+;; ----------------------------------------
 ;;; Licence:
 ;; GNU GPL <www.gnu.org/copyleft/gpl.html>
 ;; ========================================
 
 ;;==============;;
-;;; Load Paths ;;;
+;;; Load Paths  ;;
 ;;==============;;
 (add-to-list 'load-path "~/.emacs.d/") ;; user load path
 (add-to-list 'load-path "~/.emacs.d/ada")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/haskell-mode/")
 
 ;;==================;;
-;;; Prettify emacs ;;;
+;;; Prettify emacs  ;;
 ;;==================;;
 (require 'zenburn)
 
@@ -38,16 +40,23 @@
 
 (set-face-attribute 'default nil :height 92)
 
-;; I don't think I actually need this anymore I don't think I've started the server in X for a long time
-(when window-system
-  (zenburn)
-  (set-frame-height (selected-frame) 38)
-  (set-frame-width (selected-frame) 143)
-  (add-hook 'org-mode-hook 'org-toggle-pretty-entities))
+;; funky frame specific color-themes
+(defun apply-color-theme (frame)
+  "Apply color theme to a frame based on whether its a 'real'
+   window or a console window"
+  (select-frame frame)
+  (if (window-system frame)
+        (zenburn);; (add-hook 'org-mode-hook 'org-toggle-pretty-entities)) ;; might be possible
+     (color-theme-tango-black)))
+
+(setq color-theme-is-global nil)
+(add-hook 'after-make-frame-functions 'apply-color-theme)
 
 ;;=============================;;
-;;; icomplete, ibuffer, ifile ;;;
+;;; icomplete, ibuffer, ifile  ;;
 ;;=============================;;
+
+(require 'ido) ;; interactively do stuff
 
 ;; icomplete
 (autoload 'icomplete "Preview command input." t)
@@ -60,7 +69,7 @@
 (setq ibuffer-saved-filter-groups
       (quote (("default"
 	       ("Emacs Misc" (or (name . "^\\*scratch\\*$") (name . "^\\*Messages\\*$") (name . "NEWS$")))
-	       ("Configs" (or (filename . "emacs.el") (filename . "stumpwmrc.el") (filename . "gnus.el") (filename . "bashrc")))
+	       ("Configs" (or (name . "emacs.el") (name . "stumpwmrc.el") (name . "gnus.el") (name . "bashrc")))
 	       ("Agenda" (or (filename . "todo.org") (filename . "Uni.org") (name . "^\\*Org Agenda\\*$")))
 	       ("GIT" (or (mode . diff-mode) (mode . magit-mode) (name . "^\\*magit-process\\*$") (name . "^\\*magit-log-edit\\*$")))
 	       ("ERC" (mode . erc-mode))
@@ -75,8 +84,21 @@
       ibuffer-sorting-mode 'recency
       ibuffer-use-header-line t)
 
+(add-hook 'ibuffer-mode-hook (lambda ()
+			       (ibuffer-auto-mode 1)
+			       (ibuffer-switch-to-saved-filter-groups "default")))
+
+(defun my-ibuffer-load-hook ()
+  "Hook for when ibuffer is loaded."
+  (define-ibuffer-filter unsaved-file-buffers
+    "Only show unsaved buffers backed by a real file."
+    (:description "unsaved file buffers")
+    (and (buffer-local-value 'buffer-file-name buf) (buffer-modified-p buf)))
+  (define-key ibuffer-mode-map (kbd "/ *") 'ibuffer-filter-by-unsaved-file-buffers))
+(eval-after-load 'ibuffer-load-hook '(my-ibuffer-load-hook))
+
 ;;==================;;
-;;; Scratch Buffer ;;;
+;;; Scratch Buffer  ;;
 ;;==================;;
 
 ;; bury *scratch* buffer instead of killing it
@@ -102,22 +124,23 @@
 ;; If I like it I will save to a file with C-c C-w
 (custom-set-variables
  '(initial-scratch-message ";; ==================== 
-;; Author:
+;;; Author:
 ;; Joshua Chubb <chubb.jp@gmail.com>
 ;;
-;; DATE: 
+;;; DATE: 
 ;; 
-;; ========================================"))
+;; ========================================
+"))
 
 ;;=============;;
-;;; Variables ;;;
+;;; Variables  ;;
 ;;=============;;
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (savehist-mode t)
 
 ;;=====================;;
-;;; extra keybindings ;;;
+;;; extra keybindings  ;;
 ;;=====================;;
 
 ;; File switches
@@ -127,8 +150,11 @@
 (global-set-key (kbd "C-c 2")   'switch-to-gtd)
 
 ;; Non-File Buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c 1 d") 'dired)
 (global-set-key (kbd "C-c 1 g") 'gnus)
+(global-set-key (kbd "<f8>") 'erc-start-or-switch)
+(global-set-key (kbd "<f9>") 'package-list-packages)
 (global-set-key (kbd "<f10>") 'switch-to-scratch-and-back)
 (global-set-key (kbd "<f11>") 'magit-status)
 (global-set-key (kbd "<f12>") 'org-agenda)
@@ -140,7 +166,7 @@
 (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)
 
 ;;=====================;;
-;;; IDE useful stuffs ;;;
+;;; IDE useful stuffs  ;;
 ;;=====================;;
 
 ;; Auto-Insert stuff
@@ -150,15 +176,16 @@
 (setq auto-insert-query nil)
 
 ;; Auto-Complete
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+(global-auto-complete-mode t)
+(setq ac-auto-start 5 ac-ignore-case t ac-auto-show-menu t)
 
-;; (require 'auto-complete-config)
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;; (ac-config-default)
-;; (global-auto-complete-mode t)
-;; (setq ac-auto-start 5 ac-ignore-case t ac-auto-show-menu t)
+(let ((fn-list '(Org-mode eshell-mode haskell-mode shell-script-mode ada-mode))) (mapc (lambda (fn) (add-to-list ' ac-modes fn)) fn-list))
 
 ;;===============;;
-;;; Major Modes ;;;
+;;; Major Modes  ;;
 ;;===============;;
 
 ;; Package
@@ -190,12 +217,10 @@
 (require 'ada-mode) ; maybe this will help
 
 ;;===============;;
-;;; Minor Modes ;;;
+;;; Minor Modes  ;;
 ;;===============;;
 
 (autoload 'tramp "Remote file manipulation in TRAMP." t)
-
-(require 'ido) ;; interactively do stuff
 
 ;;; Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
@@ -252,6 +277,18 @@ the character typed."
   (let ((str (read-from-minibuffer "Enter course code: ")))
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
+
+(defun insert-today ()
+  "Insert the today's date"
+  (interactive)
+  (insert (format-time-string "%A, %e %B %Y" (current-time))))
+
+(defun erc-start-or-switch (&rest junk)
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (if (get-buffer "irc.freenode.net:6667")
+      (erc-track-switch-buffer 1)
+    (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-fullname)))
 
 ;;=============;;
 ;;; Skeletons ;;;
