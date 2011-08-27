@@ -7,11 +7,19 @@ For note:
 Need to run start_agent when first setting up ssh-agent
 
 *** SOME EMACS KEYBINDINGS ***
-C-c 1 Dired
-C-c 2 Open my gtd.org file for tracking study habits
-C-c 3 Open xmonad.hs
-C-c 4 Open screenrc file
-C-c 8 Magit
+C-c 1 "run program"
+	d dired
+	g gnus
+	--- To implement:
+	i erc
+C-c 0 "open config file"
+	e emacs.el ;; I should look at finding/making a function to go between (load-file blah) and the target
+	s stumpwmrc.el
+	c conkerorrc
+	--- To implement:
+	g gnus.el
+<f10> Scratch buffer
+<f11> Magit
         k kill one item (delete if untracked)
 	s stage one item
 	S stage all in a section
@@ -21,8 +29,6 @@ C-c 8 Magit
 	P push to defined remote (first time will ask which remote)
 	f 'git remote update'
 	F pull from remote
-C-c 9 ielm
-C-c 0 .emacs
 <F12> Agenda
         a Agenda
         t TODO
