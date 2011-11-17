@@ -16,12 +16,16 @@
 (add-to-list 'load-path "~/.emacs.d/") ;; user load path
 (add-to-list 'load-path "~/.emacs.d/ada")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/haskell-mode/")
-
+;; Slime
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
+(require 'slime)
+(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
+(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+(setq inferior-lisp-program "sbcl")
 ;;==================;;
 ;;; Prettify emacs  ;;
 ;;==================;;
 (require 'zenburn)
-
 (global-visual-line-mode)
 
 ;; Get rid of that deadspace
@@ -47,10 +51,25 @@
   (select-frame frame)
   (if (window-system frame)
         (zenburn);; (add-hook 'org-mode-hook 'org-toggle-pretty-entities)) ;; might be possible
-     (color-theme-tango-black)))
+     ))
 
 (setq color-theme-is-global nil)
 (add-hook 'after-make-frame-functions 'apply-color-theme)
+
+;; Mode Line
+(setq-default mode-line-format
+      (list
+	 "-- "
+       '(:eval
+	 (propertize "%b " 'face 'font-lock-builtin-face
+			   'help-echo (buffer-file-name)))
+       "(" (propertize "%02l" 'face 'font-lock-type-face) "," (propertize "%02c" 'face 'font-lock-type-face) ") - "
+       '(:eval (when (buffer-modified-p)
+		 (concat "[" (propertize "Mod"
+					 'face 'font-lock-warning-face) "] - ")))
+       (propertize "%I" 'face 'font-lock-constant-face) "/" (propertize "%m" 'face 'font-lock-constant-face)
+       '(:eval global-mode-string) " %-"
+       ))
 
 ;;=============================;;
 ;;; icomplete, ibuffer, ifile  ;;
@@ -68,6 +87,8 @@
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
+	       ("Programming" (or (mode . "c-mode") (mode . haskell-mode) (mode . ada-mode) (mode . lisp-interaction-mode)))
+      	       ("Notes" (mode . Org-mode))
 	       ("Emacs Misc" (or (name . "^\\*scratch\\*$") (name . "^\\*Messages\\*$") (name . "NEWS$")))
 	       ("Configs" (or (name . "emacs.el") (name . "stumpwmrc.el") (name . "gnus.el") (name . "bashrc")))
 	       ("Agenda" (or (filename . "todo.org") (filename . "Uni.org") (name . "^\\*Org Agenda\\*$")))
@@ -121,7 +142,7 @@
 
 ;; set the scratch message, It's the same as the lisp header
 ;; The idea is that I fiddle with code in the scratch buffer.
-;; If I like it I will save to a file with C-c C-w
+;; If I like it I will save to a file with C-x C-w
 (custom-set-variables
  '(initial-scratch-message ";; ==================== 
 ;;; Author:
@@ -198,7 +219,11 @@
 
 (load-file "~/.emacs.d/org-config.el")
 (load-file "~/.emacs.d/babel.el")
+(load-file "~/.emacs.d/web.el")
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+;; erc
+;;(load-file "~/.emacs.d/erc.el")
 
 ;; Haskell
 
@@ -288,7 +313,7 @@ the character typed."
   (interactive)
   (if (get-buffer "irc.freenode.net:6667")
       (erc-track-switch-buffer 1)
-    (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-fullname)))
+    (erc :server "irc.freenode.net" :port 6667 :nick "progmonk" :full-name "Joshua Chubb")))
 
 ;;=============;;
 ;;; Skeletons ;;;

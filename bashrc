@@ -5,7 +5,11 @@ export ALERNATE_EDITOR=emacs
 export EDITOR='emacsclient -c -nw'
 export WWW_HOME='file:///home/josh/dialer.html'
 export LOCALE=UTF-8
+
+if [ $(tty) == /dev/tty1 ]; then
 export TERM=xterm-color
+fi
+
 declare -x TEXINPUTS=.:$HOME/bin/TeX/:
 
 # If not running interactively, don't do anything
@@ -121,6 +125,8 @@ fi
 
 SSH_ENV="$HOME/.ssh/environment"
 
+
+if [ $(tty) == /dev/tty1 ]; then
 # start the ssh-agent
 function start_agent {
     echo "Initializing new SSH agent..."
@@ -163,4 +169,6 @@ else
     else
         start_agent
     fi
+fi
+
 fi

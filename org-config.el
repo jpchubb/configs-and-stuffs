@@ -13,6 +13,11 @@
 
 (require 'org-entities)
 
+;;; MobileOrg
+(setq org-directory "~/Documents/agenda/")
+(setq org-mobile-inbox-for-pull "~/Documents/agenda/from-mobile.org")
+(setq org-mobile-directory "~/dav/org/")
+
 ;;==================;;
 ;;;; Key-bindings ;;;;
 ;;==================;;
@@ -29,16 +34,16 @@
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/Documents/agenda/refile.org")
+      (quote (("d" "devotional" entry (file "~/Documents/journal.org")
+	       "** %U\n   SCRIPTURE:%?")
+	      ("s" "status" entry (file "~/Documents/blog/micro.org")
+	       "* %?\n%U\n" :prepend t :kill-buffer t)
+	      ("t" "todo" entry (file "~/Documents/agenda/refile.org")
                "* TODO %?\n%U\n%a\n  %i" :clock-in t :clock-resume t)
               ("n" "note" entry (file "~/Documents/agenda/refile.org")
                "* %? :NOTE:\n%U\n%a\n  %i" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/Documents/agenda/diary.org")
-               "* %?\n%U\n  %i" :clock-in t :clock-resume t)
               ("l" "Library book" entry (file+headline "~/Documents/agenda/Uni.org" "Library")
                "*** %^{Title}-%^{Library} \n DEADLINE: %^T\n\n" :immediate-finish t)
-              ("p" "Phone call" entry (file "~/Documents/agenda/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
               ("h" "Habit" entry (file "~/Documents/agenda/refile.org")
                "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n  %i")
 	      ("a" "Assignment" plain (file+function "~/Documents/agenda/Uni.org" course-code)

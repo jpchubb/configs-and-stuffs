@@ -44,6 +44,29 @@
 "Show current battery status."
 (echo-string (current-screen) (run-shell-command "acpi" t)))
 
+(defcommand switch-to-tty1 () ()
+  "Switch to tty1"
+  (run-shell-command "chvt 1" t))
+(defcommand switch-to-tty2 () ()
+  "Switch to tty2"
+  (run-shell-command "chvt 2" t))
+
 ;;; Keys
-(define-key stumpwm:*root-map* (kbd "B") "show-battery")
+;(defmacro defkey-top (key cmd)
+;  '(define-key *top-map* (kbd key) cmd))
+
+;(defmacro defkeys-top (& rest keys)
+;  (let ((ks (mapcar #'(lambda (k) (cons 'defkey-top k)) keys)))
+;    '(progn ,@ks)))
+
+;(defkeys-top
+; ("s-b" "show-battery")
+; ("M-<F1>" "switch-to-tty1"))
 ;(define-key sutmpwm:*root-map* (kbd "E") "emacsclient -c -e \"(zenburn)\"")
+(define-key stumpwm:*root-map* (kbd "B") "show-battery")
+(define-key stumpwm:*top-map* (kbd "M-F1") "switch-to-tty1")
+(define-key stumpwm:*top-map* (kbd "M-F2") "switch-to-tty2")
+
+(defcommand emacs () ()
+  "Start emacs unless it is already running in which case focus it."
+  (run-or-raise "emacsclient -c" '(:class "Emacs")))

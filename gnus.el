@@ -1,6 +1,6 @@
 ;; ==================== gnus.el
 ;;; Author: 
-;; Joshua Chubb <chubb.jp@gmail.com>
+;; Joshua Chubb <jpc@null.net>
 ;;; Forked from:
 ;; Matthew Ball <matt.ball@gmail.com>
 ;;
@@ -15,7 +15,7 @@
 ;; ==================
 ;;; personal settings
 ;; ==================
-(setq user-mail-address "chubb.jp@gmail.com" ;; user mail address (could use my school mail)
+(setq user-mail-address "jpc@null.net" ;; user mail address (could use my school mail)
       user-full-name "Joshua Chubb" ;; user full-name
       mail-aliases t ;; enable mail aliases
       ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; change directory where mail aliases are located
@@ -42,7 +42,7 @@
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
       gnus-posting-styles '((".*"
 			     (name "Joshua Chubb"))
-			    ("gmail" (address "chubb.jp@gmail.com"))
+			    ("null.net" (address "jpc@null.net"))
 			    ("anumail" (address "u4525731@anu.edu.au"))))
 
 (setq gnus-save-newsrc-file nil
@@ -66,8 +66,8 @@
       imap-log t ;; log the imap session
       imap-store-password t ;; store the session password
       gnus-secondary-select-methods
-      '((nnimap "gmail" ;; gmail login
-		(nnimap-address "imap.gmail.com")
+      '((nnimap "null" ;; gmail login
+		(nnimap-address "imap.mail.com")
 		(nnimap-server-port 993)
 		;; (nnimap-authinfo-file "~/.authinfo")
 		(nnimap-authenticator login)
@@ -94,12 +94,11 @@
       starttls-gnutls-program "gnutls-cli"
       starttls-extra-arguments '("--insecure"))
 
-(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "chubb.jp@gmail.com" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
+(setq smtpmail-starttls-credentials '(("smtp.mail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.mail.com" 587 "jpc@null.net" nil))
+      smtpmail-default-smtp-server "smtp.mail.com"
+      smtpmail-smtp-server "smtp.mail.com"
       smtpmail-smtp-service 587
-      ;; smtpmail-local-domain "mail.bigpond.com"
       smtpmail-debug-verb t
       smtpmail-debug-info t) ;; to debug
 
