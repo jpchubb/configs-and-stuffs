@@ -198,7 +198,8 @@
 ;;==============;;
 
 (add-to-list 'org-entities '("neg" "\\neg" t "&neg;" "[negation]" "[negation]" "¬"))
-(add-to-list 'org-entities '("vdash" "\\vdash" t "|-" "[vdash]" "[vdash]" "⊢"))
+(add-to-list 'org-entities '("vdash" "\\vdash" t "&#8870;" "[vdash]" "[vdash]" "⊢"))
+(add-to-list 'org-entities '("vDash" "\\vDash" t "&#8871;" "[vDash]" "[vDash]" "⊧"))
 (add-to-list 'org-entities '("iff" "\\iff" t "&iff;" "[if and only if]" "[if and only if]" ""))
 (add-to-list 'org-entities '("top" "\\top" t "&top;" "[Top, true]" "[Top, true]" "⊤"))
 (add-to-list 'org-entities '("bot" "\\bot" t "&bot;" "[Bot, false]" "[Bot, false]" "⊥"))

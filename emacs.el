@@ -57,19 +57,7 @@
 (add-hook 'after-make-frame-functions 'apply-color-theme)
 
 ;; Mode Line
-(setq-default mode-line-format
-      (list
-	 "-- "
-       '(:eval
-	 (propertize "%b " 'face 'font-lock-builtin-face
-			   'help-echo (buffer-file-name)))
-       "(" (propertize "%02l" 'face 'font-lock-type-face) "," (propertize "%02c" 'face 'font-lock-type-face) ") - "
-       '(:eval (when (buffer-modified-p)
-		 (concat "[" (propertize "Mod"
-					 'face 'font-lock-warning-face) "] - ")))
-       (propertize "%I" 'face 'font-lock-constant-face) "/" (propertize "%m" 'face 'font-lock-constant-face)
-       '(:eval global-mode-string) " %-"
-       ))
+(setq-default mode-line-format (list "%@%* %b (%02l,%02c) - %m -" '(:eval global-mode-string)  "%-"))
 
 ;;=============================;;
 ;;; icomplete, ibuffer, ifile  ;;
@@ -223,7 +211,17 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
 ;; erc
-;;(load-file "~/.emacs.d/erc.el")
+(erc-autojoin-mode t)
+(setq erc-autojoin-channels-alist 
+      '((".*\\.freenode.net" "#emacs" "#ubuntu-offtopic" "debian-offtopic" "#programming" "#logic")))
+
+;; check channels
+(erc-track-mode t)
+(setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+
+                                 "324" "329" "332" "333" "353" "477"))
+;; don't show any of this
+(setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
 
 ;; Haskell
 

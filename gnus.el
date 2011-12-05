@@ -87,7 +87,7 @@
 (require 'smtpmail)
 
 (defvar smtp-accounts ;; available smtp accounts
-  '((ssl "chubb.jp@gmail.com" "smtp.gmail.com" 587 "key" nil)
+  '((ssl "jpc@null.net" "smtp.mail.com" 587 "key" nil)
     (ssl "u4525731@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
 
 (setq starttls-use-gnutls t
