@@ -55,7 +55,7 @@
   (select-frame frame)
   (if (window-system frame)
       (color-theme-zenburn)
-      ;; (add-hook 'org-mode-hook 'org-toggle-pretty-entities)) ;; might be possible
+        (add-hook 'org-mode-hook 'org-toggle-pretty-entities) ;; might be possible
      ))
 
 (setq color-theme-is-global nil)
@@ -76,17 +76,9 @@
 	       ;; Time?
 	       '(:eval (format-time-string "%H:%M"))
 	       " "
-	       ;; Erc tracking
-;;	       '(:eval erc-track-add-to-mode-line)
 	       ;; Global-mode-string wheeeeeee
 	       "%M"
 	       ))
-
-;;; Flashcard
-(setq fc-base "~/.emacs.d/flashcard/")
-(setq fc-default-lang 'en)
-(add-to-list 'load-path "~/.emacs.d/flashcard/")
-(load "~/.emacs.d/flashcard/fc")
 
 ;;=============================;;
 ;;; icomplete, ibuffer, ifile  ;;
@@ -174,9 +166,9 @@
 ;; 
 ;; ========================================
 ")
- '(jabber-account-list (quote (("jpc@jabber.org" (:password . "f^F2PR5c")) ("progmonk@chat.facebook.com" (:password . "iamapassword")))))
- '(jabber-mode-line-compact t)
- '(jabber-mode-line-mode nil)
+ '(jabber-account-list (quote (("jpc@jabber.net" (:password . "f^F2PR5c")) ("progmonk@chat.facebook.com" (:password . "iamapassword")))))
+ '(jabber-mode-line-compact nil)
+ '(jabber-mode-line-mode t)
  '(jabber-show-offline-contacts nil))
 
 ;;=============;;
@@ -200,18 +192,11 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c 1 d") 'dired)
 (global-set-key (kbd "C-c 1 g") 'gnus)
-(global-set-key (kbd "C-c 1 l") 'slime-connect-or-switch)
-(global-set-key (kbd "<f7>") 'package-list-packages)
-(global-set-key (kbd "<f8>") 'jabber-activity-switch-to)
-(global-set-key (kbd "<f9>") 'erc-start-or-switch)
-(global-set-key (kbd "<f10>") 'org-agenda)
+(global-set-key (kbd "<f8>") 'erc-start-or-switch)
+(global-set-key (kbd "<f9>") 'package-list-packages)
+(global-set-key (kbd "<f10>") 'switch-to-scratch-and-back)
 (global-set-key (kbd "<f11>") 'magit-status)
-(global-set-key (kbd "<f12>") 'switch-to-scratch-and-back)
-
-;; fc
-(global-set-key (kbd "C-<f7>") 'fc-add-entry)
-(global-set-key (kbd "C-<f8>") 'fc-edit)
-(global-set-key (kbd "C-<f9>") 'fc)
+(global-set-key (kbd "<f12>") 'org-agenda)
 
 ;; recentf
 (require 'recentf)
@@ -246,7 +231,7 @@
 (require 'jabber)
 
 ;; Package
-;(when (load (expand-file-name "~/.emacs.d/elpa/package.el")) (package-initialize))
+(when (load (expand-file-name "~/.emacs.d/elpa/package.el")) (package-initialize))
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("org-mode" . "http://orgmode.org/pkg/daily/")
@@ -261,8 +246,8 @@
 
 ;; erc
 (erc-autojoin-mode t)
-(setq erc-autojoin-channels-alist
-      '((".*\\.freenode.net" "#emacs" "#ubuntu-offtopic" "#programming" "#logic")))
+(setq erc-autojoin-channels-alist 
+      '((".*\\.freenode.net" "#emacs" "#ubuntu-offtopic" "debian-offtopic" "#programming" "#logic")))
 
 ;; check channels
 (erc-track-mode t)
@@ -271,8 +256,6 @@
                                  "324" "329" "332" "333" "353" "477"))
 ;; don't show any of this
 (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
-
-(setq erc-track-position-in-mode-line t)
 
 ;; Haskell
 
@@ -357,40 +340,12 @@ the character typed."
   (interactive)
   (insert (format-time-string "%A, %e %B %Y" (current-time))))
 
-
-;; Jabber switch dunno about this
-;;(defun jabber-roster-or-activechat (&rest junk)
-;;  "Switch to the roster or active"
-;;  (interactive)
-;;  (if (and (or (eq major-mode 'jabber-chat) (eq major-mode jabber-roster)) ())
-;;      (jabber-activity-switch-to)
-
-(defvar jroa-other-buffer nil)
-(defun jabber-roster-or-activechat ()
-  "Switch to the roster or active"
-  (interactive)
-  (let ((jabber-buffer-name (get-buffer "*-jabber-roster-*")))
-    (if (and (equal (current-buffer) jabber-buffer-name) jabber-activity-jids)
-	(jabber-activity-switch-to)
-      (if (equal (current-buffer) jabber-buffer-name)
-	  ((switch-to-buffer jroa-other-buffer)
-	   (setq jroa-other-buffer nil))
-	(setq jroa-other-buffer (current-buffer)) (switch-to-buffer jabber-buffer-name) (jabber-roster-mode)))))
-
-
 (defun erc-start-or-switch (&rest junk)
   "Connect to ERC, or switch to last active buffer"
   (interactive)
   (if (get-buffer "irc.freenode.net:6667")
       (erc-track-switch-buffer 1)
-    (erc :server "irc.freenode.net" :port 6667 :nick "progmonk" :password "f^F2PR5c" :full-name "Joshua Chubb")))
-
-(defun slime-connect-or-switch ()
-  ""
-  (interactive)
-  (if (get-buffer "*slime-repl sbcl*")
-      (switch-to-buffer (get-buffer "*slime-repl sbcl*"))
-    (slime-connect "localhost" "4005")))
+    (erc :server "irc.freenode.net" :port 6667 :nick "progmonk" :full-name "Joshua Chubb")))
 
 ;;=============;;
 ;;; Skeletons ;;;
@@ -411,19 +366,17 @@ the character typed."
 
 ;;(load-file "coversheet.el")
 
-;;; swank server
-;;(load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
-;;(swank:create-server :port 4005 :style :spawn :dont-close t)
-
 ;;==============;;
 ;;; Exec stuff ;;;
 ;;==============;;
 
 (server-start)
+(jabber-connect-all)
+
 (require 'org-protocol)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(jabber-roster-user-online ((t (:foreground "blue" :slant normal :weight light)))))
